@@ -38,7 +38,7 @@ st.markdown("""
     .sub-title {font-size: 1.2em; color: #666; text-align: center; margin-top: -10px;}
     div.block-container {padding-top: 2rem;}
     </style>
-    <h1 class='main-title'>✈️ Ilmailuturvallisuuden Tilannekuva</h1>
+    <h1 class='main-title'>✈️ Turvallisuustutkintojen analyysia</h1>
     <p class='sub-title'>Analyysi Suomen onnettomuustutkinnoista 2021–2024</p>
     <hr>
 """, unsafe_allow_html=True)
