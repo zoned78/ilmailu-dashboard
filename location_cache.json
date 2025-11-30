@@ -1,0 +1,520 @@
+{
+    "Rovaniemi": [
+        66.5025657,
+        25.73122
+    ],
+    "Lappeenranta": [
+        61.0583417,
+        28.1862293
+    ],
+    "Hattula": [
+        61.0631229,
+        24.3669975
+    ],
+    "Tampere": [
+        61.4977929,
+        23.7616372
+    ],
+    "Pori": [
+        61.4866126,
+        21.7972071
+    ],
+    "Vaasa": [
+        63.0957722,
+        21.6159187
+    ],
+    "Helsinki": [
+        60.1666204,
+        24.9435408
+    ],
+    "Vantaa": [
+        60.292997,
+        25.0435254
+    ],
+    "Joensuu": [
+        62.6005753,
+        29.7622128
+    ],
+    "Uti": [
+        60.897493,
+        26.9484723
+    ],
+    "Jyväskylä": [
+        62.241672,
+        25.7495806
+    ],
+    "Helsingi": [
+        60.1666204,
+        24.9435408
+    ],
+    "Riihimäe": null,
+    "VOR-majaka": null,
+    "Turku": [
+        60.4515944,
+        22.2669983
+    ],
+    "Kuopio": [
+        62.8924641,
+        27.6783597
+    ],
+    "Raportointi": null,
+    "Hango": [
+        59.8228008,
+        22.9695005
+    ],
+    "Ivalo": [
+        68.6588185,
+        27.5348114
+    ],
+    "Hong.pdf": null,
+    "Turu": [
+        60.4515944,
+        22.2669983
+    ],
+    "Kittilä": [
+        67.651985,
+        24.9095086
+    ],
+    "Paraisi": null,
+    "Lenno": null,
+    "Mäntsälä": [
+        60.6339269,
+        25.3188193
+    ],
+    "Oulu": [
+        65.0117869,
+        25.4701983
+    ],
+    "Seinäjoe": [
+        62.6911066,
+        22.833321
+    ],
+    "Porvoo": [
+        60.3944372,
+        25.661997
+    ],
+    "Siilinjärve": null,
+    "Tammisaare": null,
+    "Rengo": [
+        60.8973271,
+        24.2854098
+    ],
+    "Bromarvi": null,
+    "Jämijärve": [
+        61.7763716,
+        22.7146396
+    ],
+    "Lentoväylä": [
+        62.6402658,
+        29.6606418
+    ],
+    "Porvo.pdf": null,
+    "Närpiö": [
+        62.4779756,
+        21.336676
+    ],
+    "Viitasaare": [
+        63.0663734,
+        25.2830439
+    ],
+    "Kerimäe": null,
+    "Maarianhamina": [
+        60.102423,
+        19.94126
+    ],
+    "Simsalö": [
+        60.2315297,
+        25.2875518
+    ],
+    "Kuusamo": [
+        65.9645637,
+        29.1883283
+    ],
+    "Tankavaara": [
+        68.1810406,
+        27.0984597
+    ],
+    "Matkustajalentokonee": null,
+    "Oulaisi": null,
+    "Kotka": [
+        60.4672661,
+        26.9459439
+    ],
+    "Fin.pdf": null,
+    "GOGLA": null,
+    "RENKO": [
+        60.8973271,
+        24.2854098
+    ],
+    "OH-LMY": null,
+    "Kauhava": [
+        63.0993728,
+        23.0569547
+    ],
+    "Saksalaise": null,
+    "RIDAS-odotuskuvio": null,
+    "Kirkkonumme": null,
+    "Petsmo": [
+        63.220743,
+        21.789304
+    ],
+    "Vuolenkoske": null,
+    "Lentoperämiehe": null,
+    "Lennonjohtoporrastukse": null,
+    "Päällikö": [
+        61.2097539,
+        28.8165346
+    ],
+    "Ranua": [
+        65.9276817,
+        26.5131044
+    ],
+    "Kajaani": [
+        64.2247169,
+        27.7337773
+    ],
+    "Akkuje": null,
+    "Suomenlahde": [
+        60.3196247,
+        26.8718718
+    ],
+    "Pakkolasku": null,
+    "Hel.pdf": null,
+    "Sodankylä": [
+        67.4189716,
+        26.5902179
+    ],
+    "BALTI": null,
+    "Kiitotievaloihi": null,
+    "Tahkovuore": null,
+    "Leppävede": null,
+    "Valkeala": [
+        60.9416546,
+        26.8002258
+    ],
+    "Vampula": [
+        61.0263238,
+        22.6869548
+    ],
+    "Pudasjärve": [
+        65.4020528,
+        26.9610799
+    ],
+    "Matkustamomiehistö": null,
+    "Jämsä": [
+        61.8637802,
+        25.1897493
+    ],
+    "Taipalsaare": null,
+    "Räyskälä": [
+        60.7408851,
+        24.1436032
+    ],
+    "Ruuki": null,
+    "Helikopterit.txt": null,
+    "Ilmailu": [
+        60.311238,
+        24.9692486
+    ],
+    "Kuumailmapallot.txt": null,
+    "Hyvinkää": [
+        60.6311481,
+        24.8603615
+    ],
+    "Kontiolahde": null,
+    "Kahdeksa": [
+        63.5487003,
+        22.7072642
+    ],
+    "V.pdf": null,
+    "Kannettava": null,
+    "Ilma-alukse": null,
+    "Kokkola-Pietarsaare": [
+        63.7192474,
+        23.1403733
+    ],
+    "Norjalaise": null,
+    "OH-LVA": null,
+    "Espanja": [
+        42.0143753,
+        3.1907856
+    ],
+    "Laskuvarjohyppääji": null,
+    "Koululenno": null,
+    "Liikelentokonee": null,
+    "Reittilenno": null,
+    "P.pdf": null,
+    "Norwegiani": null,
+    "Laskuvarjohyppytoiminta.txt": null,
+    "Liikenneilmailu.txt": null,
+    "Muhokse": null,
+    "Turvallisuustutkintalaki": null,
+    "Ultrakevyet": null,
+    "Hong": [
+        22.2798877,
+        114.1573541
+    ],
+    "Porvo": null,
+    "SAS": [
+        47.4173113,
+        -91.246415
+    ],
+    "OH-BEX": null,
+    "Lentäjä": [
+        61.4707844,
+        23.7339701
+    ],
+    "Helsinki-Vantaa": [
+        60.3218156,
+        24.9473611
+    ],
+    "Vor-majaka": null,
+    "Lentoturvallisuutt": null,
+    "Ultrakevytlentokonee": null,
+    "Seinäjoki": [
+        62.7906684,
+        22.8398019
+    ],
+    "Helikopterille": null,
+    "Vaas": null,
+    "Lentokonee": null,
+    "Harrastevalmisteiselle": null,
+    "Kahde": null,
+    "Sas": [
+        47.4173113,
+        -91.246415
+    ],
+    "Gogla": null,
+    "Renko": [
+        60.8973271,
+        24.2854098
+    ],
+    "Oh-lmy": null,
+    "Ridas-odotuskuvio": null,
+    "Vaaratilanne": null,
+    "Harrasterakenteise": null,
+    "Balti": null,
+    "Porrastukse": null,
+    "D1/2007l": null,
+    "D1/2008l": null,
+    "D1/2011l": null,
+    "D13/2007l": null,
+    "D2/2011l": null,
+    "D5/2009l": null,
+    "D6/2010l": null,
+    "D8/2008l": null,
+    "D9/2007l": null,
+    "D9/2010l": null,
+    "Kontiolahti": [
+        62.766667,
+        29.85
+    ],
+    "L2017-06": null,
+    "Allvarligt": null,
+    "Kokkola-pietarsaare": null,
+    "Kokkola-": [
+        63.8391421,
+        23.1336845
+    ],
+    "Rapport": null,
+    "Savonlinna": [
+        61.869874,
+        28.880045
+    ],
+    "Valkeakoske": null,
+    "Airbus": null,
+    "Lahti-vesivehmaa": [
+        61.1443336,
+        25.6883031
+    ],
+    "Kemi": [
+        65.7333404,
+        24.5666495
+    ],
+    "L2021-e3": null,
+    "hattula": [
+        61.0631229,
+        24.3669975
+    ],
+    "pori": [
+        61.4866126,
+        21.7972071
+    ],
+    "vaasa": [
+        63.0957722,
+        21.6159187
+    ],
+    "joensuu": [
+        62.6005753,
+        29.7622128
+    ],
+    "uti": [
+        60.897493,
+        26.9484723
+    ],
+    "vor-majaka": null,
+    "lentoturvallisuutt": null,
+    "helsingi": [
+        60.1666204,
+        24.9435408
+    ],
+    "riihimäe": null,
+    "kuopio": [
+        62.8924641,
+        27.6783597
+    ],
+    "hango": [
+        59.8228008,
+        22.9695005
+    ],
+    "ivalo": [
+        68.6588185,
+        27.5348114
+    ],
+    "kittilä": [
+        67.651985,
+        24.9095086
+    ],
+    "paraisi": null,
+    "ultrakevytlentokonee": null,
+    "mäntsälä": [
+        60.6339269,
+        25.3188193
+    ],
+    "oulu": [
+        65.0117869,
+        25.4701983
+    ],
+    "porvoo": [
+        60.3944372,
+        25.661997
+    ],
+    "siilinjärve": null,
+    "tammisaare": null,
+    "rengo": [
+        60.8973271,
+        24.2854098
+    ],
+    "bromarvi": null,
+    "jämijärve": null,
+    "lento-osasto": [
+        61.2474286,
+        28.8943881
+    ],
+    "vaas": null,
+    "lentokonee": null,
+    "närpiö": [
+        62.4779756,
+        21.336676
+    ],
+    "viitasaare": null,
+    "Lentovaurio": null,
+    "kerimäe": null,
+    "simsalö": [
+        60.2315297,
+        25.2875518
+    ],
+    "kuusamo": [
+        65.9645637,
+        29.1883283
+    ],
+    "tankavaara": [
+        68.1810406,
+        27.0984597
+    ],
+    "oulaisi": null,
+    "kotka": [
+        60.4672661,
+        26.9459439
+    ],
+    "kahde": null,
+    "sas": [
+        47.4173113,
+        -91.246415
+    ],
+    "gogla": null,
+    "renko": [
+        60.8973271,
+        24.2854098
+    ],
+    "kauhava": [
+        63.0993728,
+        23.0569547
+    ],
+    "ridas-odotuskuvio": null,
+    "turu": [
+        60.4515944,
+        22.2669983
+    ],
+    "kirkkonumme": null,
+    "harrasterakenteise": null,
+    "petsmo": [
+        63.220743,
+        21.789304
+    ],
+    "vuolenkoske": null,
+    "lentoperämiehe": null,
+    "ranua": [
+        65.9276817,
+        26.5131044
+    ],
+    "kajaani": [
+        64.2247169,
+        27.7337773
+    ],
+    "akkuje": null,
+    "suomenlahde": null,
+    "kaksimoottorise": null,
+    "sodankylä": [
+        67.4189716,
+        26.5902179
+    ],
+    "balti": null,
+    "porrastukse": null,
+    "kiitotievaloihi": null,
+    "tahkovuore": null,
+    "leppävede": null,
+    "valkeala": [
+        60.9416546,
+        26.8002258
+    ],
+    "vampula": [
+        61.0263238,
+        22.6869548
+    ],
+    "pudasjärve": null,
+    "D4/2007l": null,
+    "jämsä": [
+        61.8637802,
+        25.1897493
+    ],
+    "taipalsaare": null,
+    "räyskälä": [
+        60.7408851,
+        24.1436032
+    ],
+    "ruuki": null,
+    "hyvinkää": [
+        60.6311481,
+        24.8603615
+    ],
+    "lentäjä": null,
+    "kittil": null,
+    "kokkola-pietarsaare": null,
+    "savonlinna": [
+        61.869874,
+        28.880045
+    ],
+    "valkeakoske": null,
+    "espanja": [
+        42.0143753,
+        3.1907856
+    ],
+    "laskuvarjohyppääji": null,
+    "lahti-vesivehmaa": [
+        61.1443336,
+        25.6883031
+    ],
+    "liikelentokonee": null,
+    "norwegiani": null
+}

@@ -5,10 +5,17 @@ import os
 from google.api_core import exceptions
 
 # --- ASETUKSET ---
-GOOGLE_API_KEY = "AIzaSyAJzJP0QTfStnyxwfU2edCkQzn7aMwn-0c"
 
-# SUOSITUS: Käytä 'gemini-1.5-flash'. Se on luotettavin.
-# Jos haluat kokeilla onneasi Prolla, vaihda tähän 'gemini-2.0-pro-exp'
+# 1. Haetaan avain
+try:
+    import secrets
+    GOOGLE_API_KEY = secrets.GOOGLE_API_KEY
+except ImportError:
+    print("VIRHE: secrets.py -tiedostoa ei löydy!")
+    exit()
+
+# 2. Malli: Käytetään Flashia, koska se pystyy lukemaan valtavan määrän tekstiä kerralla.
+# Voit kokeilla 'gemini-2.0-flash-exp' tai 'gemini-1.5-flash'
 MODEL_NAME = 'gemini-2.5-flash' 
 
 INPUT_FILE = "structured_data.json"
@@ -16,42 +23,47 @@ OUTPUT_FILE = "ai_analyses.json"
 
 def create_analysis_prompt(ac_type, reports):
     context = ""
-    # Flashin konteksti-ikkuna on iso (1M tokenia), joten voimme syöttää paljon dataa.
-    # Otetaan max 40 viimeisintä tapausta.
-    for r in reports[:40]: 
-        context += f"--- RAPORTTI {r['date']} ({r['location_name']}) ---\n"
-        context += f"{r['summary']}\n\n"
+    
+    # --- MUUTOS: EI ENÄÄ RAJOITINTA ---
+    # Otetaan KAIKKI raportit, mutta pidetään tiivistelmä napakkana (300 merkkiä per raportti).
+    # 500 raporttia * 300 merkkiä = 150 000 merkkiä. 
+    # Tämä mahtuu helposti Geminin 1 miljoonan tokenin ikkunaan.
+    
+    # Järjestetään raportit aikajärjestykseen (vanhin ensin), jotta AI hahmottaa kehityksen
+    reports_sorted = sorted(reports, key=lambda x: x.get('date', '0'))
+    
+    for r in reports_sorted: 
+        context += f"- {r['date']} | {r['location_name']}: {r['summary'][:300]}\n"
 
     return f"""
-    Toimit Onnettomuustutkintakeskuksen johtavana turvallisuusanalyytikkona.
-    Tehtäväsi on analysoida alla oleva aineisto ja tuottaa siitä ammattimainen yhteenveto.
+    Toimit Onnettomuustutkintakeskuksen (OTKES) johtavana turvallisuusanalyytikkona.
+    Tehtäväsi on analysoida alla oleva aineisto, joka kattaa vuodet 1996–2025.
     
     KOHDERYHMÄ: {ac_type}
-    AINEISTO:
+    TAPAUSTEN MÄÄRÄ: {len(reports)}
+    
+    AINEISTO (Aikajärjestyksessä 1996 -> 2025):
     {context}
     
     LAADI ANALYYSI (Markdown-muodossa) SEURAAVALLA RAKENTEELLA:
     
-    ### ✈️ Analyysi: {ac_type}
+    ### ✈️ Analyysi: {ac_type} ({len(reports)} tapausta)
     
-    **1. Tilannekuva ja trendit**
-    Kuvaile lyhyesti, millainen onnettomuusprofiili tällä ryhmällä on Suomessa.
+    **1. Historiallinen kehitys ja trendit**
+    Kuvaile, miten onnettomuuksien luonne on muuttunut vuosikymmenten aikana (90-luku vs. nykypäivä). Ovatko tietyt onnettomuustyypit vähentyneet tai lisääntyneet?
     
-    **2. Tunnistetut juurisyyt ja vaaratekijät**
-    Erittele 2-3 yleisintä syytä (esim. "Sääolosuhteiden vaikutus", "Tekniset viat", "Inhimillinen tekijä"). Käytä luettelomerkkejä.
+    **2. Keskeiset juurisyyt (Koko aineisto)**
+    Erittele 2-3 merkittävintä syytä, jotka toistuvat aineistossa vuodesta toiseen. Etsi yhdistäviä tekijöitä (esim. "Kaasuttimen jäätyminen harrasteilmailussa" tai "Kommunikaatiokatkokset").
     
-    **3. Konkreettinen turvallisuussuositus**
-    Anna yksi selkeä toimenpidesuositus, jolla vastaavat tapaukset voitaisiin estää.
+    **3. Turvallisuussuositus**
+    Anna yksi, koko aineiston perusteella tärkein turvallisuusvinkki tälle ryhmälle.
     
-    Kirjoita suomeksi, selkeällä virkakielellä.
+    Kirjoita suomeksi, asiantuntevalla tyylillä. Perusta analyysi vain tähän dataan.
     """
 
 def generate_with_backoff(model, prompt):
-    """
-    Yrittää luoda sisältöä. Jos kiintiö täyttyy, odottaa pidempään ja yrittää uudelleen.
-    """
     retries = 5
-    wait_time = 10 # Aloitetaan 10 sekunnista
+    wait_time = 10 
     
     for attempt in range(retries):
         try:
@@ -60,27 +72,28 @@ def generate_with_backoff(model, prompt):
         except exceptions.ResourceExhausted:
             print(f"    ⚠️ Kiintiö täynnä (Yritys {attempt+1}/{retries}). Odotetaan {wait_time}s...")
             time.sleep(wait_time)
-            wait_time *= 2 # Tuplataan odotusaika: 10s -> 20s -> 40s...
+            wait_time *= 2 
         except Exception as e:
             print(f"    ❌ Muu virhe: {e}")
             return None
             
-    return "Analyysi epäonnistui toistuvien yhteysongelmien vuoksi."
+    return "Analyysi epäonnistui."
 
 def main():
-    if not GOOGLE_API_KEY or "AIza" not in GOOGLE_API_KEY:
-        print("VIRHE: API-avain puuttuu!")
-        return
-
     genai.configure(api_key=GOOGLE_API_KEY)
     print(f"Alustetaan malli: {MODEL_NAME}...")
-    model = genai.GenerativeModel(MODEL_NAME)
+    
+    try:
+        model = genai.GenerativeModel(MODEL_NAME)
+    except Exception as e:
+        print(f"VIRHE: {e}")
+        return
 
     try:
         with open(INPUT_FILE, 'r', encoding='utf-8') as f:
             data = json.load(f)
     except FileNotFoundError:
-        print(f"Virhe: {INPUT_FILE} puuttuu. Aja data_enricher.py ensin.")
+        print(f"Virhe: {INPUT_FILE} puuttuu.")
         return
 
     grouped_data = {}
@@ -91,17 +104,14 @@ def main():
         grouped_data[ac].append(entry)
 
     analyses = {}
-    # Jos haluat säilyttää vanhat analyysit (esim. jos joku onnistui aiemmin), poista kommentit:
-    # if os.path.exists(OUTPUT_FILE):
-    #    with open(OUTPUT_FILE, 'r', encoding='utf-8') as f:
-    #        analyses = json.load(f)
+    
+    print(f"Aloitetaan analyysi {len(grouped_data)} ryhmälle.")
+    print("Käsitellään koko historiaa (1996-2025), joten promptit ovat suuria.\n")
 
-    print(f"Aloitetaan analyysi {len(grouped_data)} ryhmälle.\n")
-
+    # 1. Analysoidaan konetyyppiryhmät
     for i, (ac_type, reports) in enumerate(grouped_data.items()):
         key = f"Suomi_{ac_type}"
         
-        # Analysoidaan aina uudestaan varmuuden vuoksi
         if len(reports) > 0:
             print(f"[{i+1}/{len(grouped_data)}] Analysoidaan: {ac_type} ({len(reports)} tapausta)...")
             
@@ -112,14 +122,22 @@ def main():
                 analyses[key] = result
                 print("    ✅ Valmis.")
             
-            # Pieni tauko onnistumisenkin jälkeen
             time.sleep(5) 
+
+    # 2. Analysoidaan "Kaikki" (MASSIVINEN PROMPTI)
+    print(f"\n[{len(grouped_data)+1}] Luodaan yhteenveto KAIKISTA ({len(data)} kpl)...")
+    all_prompt = create_analysis_prompt("Kaikki Suomen onnettomuudet", data)
+    all_result = generate_with_backoff(model, all_prompt)
+    
+    if all_result:
+        analyses["Suomi_Kaikki"] = all_result
+        print("    ✅ Yhteenveto valmis.")
 
     with open(OUTPUT_FILE, 'w', encoding='utf-8') as f:
         json.dump(analyses, f, ensure_ascii=False, indent=4)
 
-    print(f"\nVALMIS! Analyysit tallennettu: {OUTPUT_FILE}")
-    print("Nyt voit päivittää GitHubin.")
+    print(f"\nVALMIS! Kattavat analyysit tallennettu: {OUTPUT_FILE}")
+    print("Päivitä GitHub: git add . -> commit -> push")
 
 if __name__ == "__main__":
     main()
