@@ -2,6 +2,7 @@ import json
 import re
 import time
 import os
+import urllib.parse
 import google.generativeai as genai
 from geopy.geocoders import Nominatim
 from geopy.exc import GeocoderTimedOut
@@ -23,7 +24,7 @@ except ImportError:
     print("VAROITUS: secrets.py puuttuu tai virheellinen. AI-tunnistus ei toimi.")
     model = None
 
-# --- 1. NOPEAT SÄÄNNÖT ---
+# --- 1. KONETYYPIT ---
 AIRCRAFT_RULES = [
     ("Laskuvarjohyppy", [r"laskuvarjo", r"hyppy", r"pudotus"], []), 
     ("Kuumailmapallo", [r"kuumailmapallo", r"pallo-onnettomuus"], []),
@@ -90,57 +91,6 @@ LOCATIONS = {
     "Kalajoki": (64.2583, 23.9492),
     "Mäntsälä": (60.6360, 25.3194),
     "Pudasjärvi": (65.3974, 26.9973),
-    "Sodankylä": (67.3951, 26.6074),
-    "Ylivieska": (64.0586, 24.7075),
-    "Hanko": (59.8231, 22.9700),
-    "Imatra": (61.1917, 28.7778),
-    "Ranua": (65.9270, 26.5175),
-    "Kiuruvesi": (63.6525, 26.6200),
-    "Jämsä": (61.8642, 25.1900),
-    "Hattula": (61.0561, 24.3717),
-    "Riihimäki": (60.7389, 24.7736),
-    "Haapavesi": (64.1333, 25.3667),
-    "Pertunmaa": (61.5028, 26.4778),
-    "Parainen": (60.3000, 22.3000),
-    "Kauhajoen lentopaikka": (62.4625, 22.3931),
-    "Orivesi": (61.6772, 24.3572),
-    "Sastamala": (61.3417, 22.9078),
-    "Siikajoki": (64.6667, 25.1000),
-    "Iitti": (61.0833, 26.1667),
-    "Akaa": (61.1500, 23.6833),
-    "Uusikaarlepyy": (63.5222, 22.5306),
-    "Kangasniemi": (61.9933, 26.6458),
-    "Somero": (60.6333, 23.5167),
-    "Kaarina": (60.4239, 22.5178),
-    "Taipalsaari": (61.1606, 28.0600),
-    "Kolari": (67.3311, 23.7908),
-    "Naantali": (60.3761, 21.9428),
-    "Rääkkylä": (62.3139, 29.6231),
-    "Utsjoki": (69.9086, 27.0269),
-    "Eura": (61.1319, 22.1331),
-    "Pelkosenniemi": (67.1092, 27.5144),
-    "Huittinen": (61.0286, 22.6917),
-    "Valkeakoski": (61.2667, 24.0333),
-    "Inkoo": (60.0667, 24.0667),
-    "Laukaa": (62.4144, 25.9527),
-    "Mustasaari": (63.1111, 21.7000),
-    "Raasepori": (59.9733, 23.4367),
-    "Rautavaara": (63.4947, 28.2982),
-    "Juuka": (63.2419, 29.2521),
-    "Kontiolahti": (62.7654, 29.8469),
-    "Sysmä": (61.5036, 25.6856),
-    "Piikajärvi": (61.2467, 22.1972),
-    "Urjala": (61.0808, 23.5481),
-    "Pieksämäki": (62.3006, 27.1336),
-    "Salo": (60.3833, 23.1333),
-    "Salla": (66.8312, 28.6626),
-    "Alastaro": (60.9551, 22.8583),
-    "Oripää": (60.8633, 22.6972),
-    "Valkeala": (60.9381, 26.8017), # Kouvola
-    "Kerimäki": (61.9167, 29.2833), # Savonlinna
-    "Ruukki": (64.6667, 25.1000),
-    "Leppävesi": (62.2644, 25.8539),
-    "Pudasjärvi": (65.3974, 26.9973),
     "Immola": (61.2500, 28.9000),
     "Tahkovuori": (63.2319, 28.0333),
     "Kirkkonummi": (60.1167, 24.4333),
@@ -157,7 +107,6 @@ LOCATIONS = {
     "Jaatila": (66.3922, 25.5489)
 }
 
-# --- 3. SYNONYYMIT ---
 SYNONYMS = {
     "helsin": "Helsinki-Vantaa", "vantaa": "Helsinki-Vantaa", "efhk": "Helsinki-Vantaa",
     "malmi": "Malmi", "efhf": "Malmi",
@@ -263,7 +212,7 @@ SYNONYMS = {
     "jaatila": "Jaatila"
 }
 
-geolocator = Nominatim(user_agent="ilmailu_dashboard_project_v25_finalfix")
+geolocator = Nominatim(user_agent="ilmailu_dashboard_project_v29_loose_search")
 
 def load_json(filename):
     if os.path.exists(filename):
@@ -325,18 +274,17 @@ def identify_aircraft_with_ai(text, cache, report_id):
 
 def detect_aircraft_smart(title, full_text, ai_cache, report_id):
     text_to_search = (clean_soft_hyphens(title) + " " + clean_soft_hyphens(full_text)[:3000]).lower()
-    
-    # 1. Regex
     for category, keywords, exclusions in AIRCRAFT_RULES:
         for kw in keywords:
             if re.search(kw, text_to_search):
                 is_excluded = False
                 for exc in exclusions:
-                    if re.search(f"{exc}.{{0,30}}{kw}|{kw}.{{0,30}}{exc}", text_to_search):
-                        is_excluded = True; break
-                if not is_excluded: return category
-
-    # 2. AI Fallback (Jarrulla)
+                    pattern = f"{exc}.{{0,30}}{kw}|{kw}.{{0,30}}{exc}"
+                    if re.search(pattern, text_to_search):
+                        is_excluded = True
+                        break
+                if not is_excluded:
+                    return category
     return identify_aircraft_with_ai(clean_soft_hyphens(title) + " " + clean_soft_hyphens(full_text), ai_cache, report_id)
 
 def clean_finnish_location(word):
@@ -383,16 +331,6 @@ def find_location_in_text(text):
             return SYNONYMS[key]
     return None
 
-# --- TÄSSÄ KORJAUS: POISTETTU 'TITLE'-PARAMETRI ---
-def create_smart_link(report_id):
-    clean_id = clean_soft_hyphens(report_id)
-    code_match = re.search(r'[A-Z]\d{4}-\d{2}|[A-Z]\d+/\d+[A-Z]', clean_id)
-    if code_match:
-        return f"https://turvallisuustutkinta.fi/fi/index/tutkintaselostukset/ilmailuonnettomuuksientutkinta/tutkintaselostuksetvuosittain.html"
-    clean_title = clean_id.replace(".pdf", "").replace(".txt", "")
-    clean_title = re.sub(r'Selvitys|Tutkintaselostus', '', clean_title, flags=re.IGNORECASE).strip()
-    return f"https://www.google.com/search?q=site:turvallisuustutkinta.fi+{clean_title}"
-
 def extract_location_from_title(title):
     clean_title = clean_soft_hyphens(title)
     clean = re.sub(r'^[A-Z0-9/]+[- ]?\w*\s+', '', clean_title)
@@ -404,6 +342,19 @@ def extract_location_from_title(title):
             if key == "kemi" and "kemikaali" in title_lower: continue
             return SYNONYMS[key]
     return None
+
+# --- UUSI HAKU: Löysä Google-haku ---
+def create_smart_link(report_id):
+    clean_id = clean_soft_hyphens(report_id)
+    
+    # Poistetaan tiedostopäätteet
+    clean_title = clean_id.replace(".pdf", "").replace(".txt", "").strip()
+    
+    # Haku ilman site: -rajoitusta, mutta OTKES-kontekstilla
+    query = f"{clean_title} OTKES"
+    safe_query = urllib.parse.quote(query)
+    
+    return f"https://www.google.com/search?q={safe_query}"
 
 def main():
     try:
@@ -418,14 +369,12 @@ def main():
     enriched_data = []
     processed_roots = set()
     
-    print("Prosessoidaan dataa (V25 - Fixed Arg)...")
+    print("Prosessoidaan dataa (V29 - Loose Search)...")
     
     for entry in data:
         raw_id = clean_soft_hyphens(entry['id'])
         
-        # Whitelist (salli L/C/D/B-alkuiset)
         is_valid_code = re.match(r'^[A-Z]\d', raw_id) or re.match(r'^[A-Z][0-9]{3}[- ]', raw_id)
-        
         if not is_valid_code:
             if any(x in raw_id.lower() for x in ["tutkintaselostukset", "otkes", "raideliikenne", "vesiliikenne", "sotilas", "muu"]): 
                 continue
@@ -458,8 +407,7 @@ def main():
             "location_name": final_loc_name,
             "lat": lat,
             "lon": lon,
-            # KORJATTU KUTSU:
-            "url": create_smart_link(title_id),
+            "url": create_smart_link(title_id), # Löysä haku
             "summary": content_text[:300].replace('\n', ' ') + "..." 
         }
         enriched_data.append(new_entry)

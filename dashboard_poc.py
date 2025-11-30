@@ -43,7 +43,7 @@ st.markdown("""
     <hr>
 """, unsafe_allow_html=True)
 
-# --- DISCLAIMER (VAROITUS) ---
+# --- DISCLAIMER ---
 st.warning("""
     **⚠️ PROOF OF CONCEPT - KOKEILUVERSIO**
     
@@ -72,6 +72,16 @@ with col2:
 filtered_df = df.copy()
 if sel_aircraft != "Kaikki":
     filtered_df = filtered_df[filtered_df['aircraft_type'] == sel_aircraft]
+
+# --- JÄRJESTÄMINEN (KORJATTU) ---
+if not filtered_df.empty:
+    # 1. Luodaan apusarake 'sort_year', jossa vuosi on numerona (eikä tekstinä)
+    # 'coerce' muuttaa virheet (N/A) NaN:ksi, fillna(0) muuttaa ne nollaksi
+    filtered_df['sort_year'] = pd.to_numeric(filtered_df['date'], errors='coerce').fillna(0)
+
+    # 2. Järjestetään ensisijaisesti VUODEN mukaan, toissijaisesti ID:n mukaan.
+    # Molemmat laskevasti (Uusin ensin).
+    filtered_df = filtered_df.sort_values(by=['sort_year', 'id'], ascending=[False, False])
 
 # --- PÄÄNÄKYMÄ ---
 
