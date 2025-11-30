@@ -39,7 +39,7 @@ st.markdown("""
     div.block-container {padding-top: 2rem;}
     </style>
     <h1 class='main-title'>✈️ Turvallisuustutkintojen analyysia</h1>
-    <p class='sub-title'>Analyysi Suomen onnettomuustutkinnoista 2021–2024</p>
+    <p class='sub-title'>Analyysi Suomen onnettomuustutkinnoista 1996–2024</p>
     <hr>
 """, unsafe_allow_html=True)
 
