@@ -6,7 +6,7 @@ from streamlit_folium import st_folium
 import matplotlib.pyplot as plt
 
 # Asetukset
-st.set_page_config(page_title="OTKES Analyysi PoC", layout="wide", page_icon="✈️")
+st.set_page_config(page_title="Turvallisuustutkinta-yhteenveto (PoC)", layout="wide", page_icon="✈️")
 
 # --- DATAN LATAUS ---
 @st.cache_data
@@ -38,20 +38,31 @@ st.markdown("""
     .sub-title {font-size: 1.2em; color: #666; text-align: center; margin-top: -10px;}
     div.block-container {padding-top: 2rem;}
     </style>
-    <h1 class='main-title'>✈️ Turvallisuustutkintojen analyysia</h1>
-    <p class='sub-title'>Analyysi Suomen onnettomuustutkinnoista 1996–2024</p>
+    <h1 class='main-title'>Turvallisuustutkinta-yhteenveto</h1>
+    <p class='sub-title'>Datan visualisointi ja analyysi Suomen ilmailuonnettomuuksista</p>
     <hr>
 """, unsafe_allow_html=True)
+
+# --- DISCLAIMER (VAROITUS) ---
+st.warning("""
+    **⚠️ PROOF OF CONCEPT - KOKEILUVERSIO**
+    
+    Tämä sivusto on tekoälyn hyödyntämistä testaava tekninen kokeiluversio (Proof of Concept).
+    * Sivuston **analyysitekstit on tuotettu automaattisesti tekoälymallilla**, eikä niitä ole ihmisen toimesta tarkastettu.
+    * Analyysit **eivät** edusta Onnettomuustutkintakeskuksen (OTKES) tai muun viranomaisen virallista kantaa tai linjausta.
+    * Tiedot on koottu julkisista lähteistä, mutta automaattisessa käsittelyssä voi esiintyä virheitä.
+    
+    Viralliset tutkintaselostukset löytyvät aina alkuperäisestä lähteestä: [turvallisuustutkinta.fi](https://turvallisuustutkinta.fi).
+""", icon="⚠️")
 
 # Filtterit
 col1, col2, col3 = st.columns([1, 1, 2])
 with col1:
-    # Tässä vaiheessa meillä on vain Suomi, mutta valikko on valmiina tulevaisuutta varten
     countries = ["Suomi"] 
     sel_country = st.selectbox("Valitse valtio", countries)
 with col2:
     if not df.empty:
-        # Järjestetään aakkosiin, "Kaikki" ensin
+        # Järjestetään aakkosiin
         ac_types = ["Kaikki"] + sorted([x for x in df['aircraft_type'].unique() if x != "Kaikki"])
     else:
         ac_types = ["Ei dataa"]
@@ -65,9 +76,9 @@ if sel_aircraft != "Kaikki":
 # --- PÄÄNÄKYMÄ ---
 
 # 1. AI Analyysi -laatikko
-st.subheader(f"📊 Analyysi: {sel_aircraft}")
+st.subheader(f"📊 AI-yhteenveto: {sel_aircraft}")
 
-# Haetaan oikea analyysiteksti avaimella "Suomi_Konetyyppi"
+# Haetaan analyysiteksti
 analysis_key = f"Suomi_{sel_aircraft}"
 analysis_text = analyses.get(analysis_key, "⚠️ Tälle valinnalle ei ole vielä valmista analyysia tietokannassa.")
 
@@ -80,7 +91,7 @@ col_left, col_right = st.columns([1, 1])
 with col_left:
     st.markdown("### 📍 Tapahtumapaikat")
     if not filtered_df.empty:
-        # Kartan keskitys: Jos suodatettu dataa, keskitä ekaan. Jos ei, keskitä Suomeen.
+        # Kartan keskitys
         valid_coords = filtered_df.dropna(subset=['lat', 'lon'])
         
         if not valid_coords.empty:
@@ -88,7 +99,6 @@ with col_left:
                 center = [65.0, 26.0]
                 zoom = 5
             else:
-                # Keskitetään tapauksiin
                 center = [valid_coords.iloc[0]['lat'], valid_coords.iloc[0]['lon']]
                 zoom = 6
         else:
@@ -98,7 +108,6 @@ with col_left:
         m = folium.Map(location=center, zoom_start=zoom)
         
         for _, row in valid_coords.iterrows():
-            # Väri: Jos otsikossa "onnettomuus" -> punainen, muuten sininen
             color = "red" if "onnettomuus" in row['id'].lower() else "blue"
             
             folium.Marker(
@@ -121,9 +130,8 @@ with col_right:
         if not loc_counts.empty:
             fig, ax = plt.subplots(figsize=(8, 4))
             loc_counts.plot(kind='barh', ax=ax, color='#0f5499', edgecolor='black')
-            ax.set_title("Yleisimmät tapahtumapaikat tässä ryhmässä")
-            ax.invert_yaxis() # Suurin ylös
-            ax.set_xlabel("Tapausten määrä")
+            ax.set_title("Yleisimmät paikkakunnat (valittu ryhmä)")
+            ax.invert_yaxis() 
             st.pyplot(fig)
         
         # Vuosijakauma
@@ -144,4 +152,4 @@ for _, row in filtered_df.iterrows():
         st.markdown(f"**Tyyppi:** {row['aircraft_type']}")
         st.markdown(f"**Sijainti:** {row['location_name']}")
         st.markdown(f"**Tiivistelmä:** _{row['summary']}_")
-        st.markdown(f"[Avaa raportti OTKESin sivuilla]({row['url']})")
+        st.markdown(f"[Avaa raportti (Linkki OTKES/Google)]({row['url']})")
