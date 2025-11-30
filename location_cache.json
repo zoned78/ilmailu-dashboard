@@ -516,5 +516,151 @@
         25.6883031
     ],
     "liikelentokonee": null,
-    "norwegiani": null
+    "norwegiani": null,
+    "lähestymiskorkeude": null,
+    "Kahdelle": [
+        60.1912699,
+        24.8836214
+    ],
+    "Riihimäki": [
+        60.7390089,
+        24.7728148
+    ],
+    "Parainen": [
+        60.3009089,
+        22.302078
+    ],
+    "siilinjärvi": [
+        63.0743109,
+        27.6623456
+    ],
+    "Tammisaari": [
+        59.9746146,
+        23.4357455
+    ],
+    "jämijärvi": [
+        61.819819,
+        22.6916093
+    ],
+    "Viitasaari": [
+        63.0837203,
+        25.8528349
+    ],
+    "Kerimäki": [
+        61.912084,
+        29.2814834
+    ],
+    "Oulainen": [
+        64.2667732,
+        24.8000331
+    ],
+    "Lähestymiskorkeude": null,
+    "Kirkkonummi": [
+        60.1217382,
+        24.4406146
+    ],
+    "Vuolenkoski": [
+        61.0858959,
+        26.1607526
+    ],
+    "suomenlahti": [
+        60.3499762,
+        27.4535129
+    ],
+    "Tahkovuori": [
+        63.2897022,
+        28.0443583
+    ],
+    "Leppävesi": [
+        62.2291632,
+        25.9448226
+    ],
+    "pudasjärvi": [
+        65.360401,
+        26.9984899
+    ],
+    "taipalsaari": [
+        61.1599368,
+        28.0604215
+    ],
+    "Ruukki": [
+        64.6634837,
+        25.098787
+    ],
+    "Kittil": null,
+    "kokkola-pietarsaari": [
+        63.7192474,
+        23.1403733
+    ],
+    "valkeakoski": [
+        61.2637921,
+        24.0301278
+    ],
+    "Immola": [
+        61.2422476,
+        28.9020945
+    ],
+    "Lappeenranna": null,
+    "Hattul": null,
+    "riihimäki": [
+        60.7390089,
+        24.7728148
+    ],
+    "parainen": [
+        60.3009089,
+        22.302078
+    ],
+    "Mäntsäl": null,
+    "seinäjoki": [
+        62.7906684,
+        22.8398019
+    ],
+    "tammisaari": [
+        59.9746146,
+        23.4357455
+    ],
+    "viitasaari": [
+        63.0837203,
+        25.8528349
+    ],
+    "kerimäki": [
+        61.912084,
+        29.2814834
+    ],
+    "oulainen": [
+        64.2667732,
+        24.8000331
+    ],
+    "Kauhav": null,
+    "kirkkonummi": [
+        60.1217382,
+        24.4406146
+    ],
+    "vuolenkoski": [
+        61.0858959,
+        26.1607526
+    ],
+    "Ranu": null,
+    "Sodankyl": null,
+    "tahkovuori": [
+        63.2880721,
+        28.0426001
+    ],
+    "leppävesi": [
+        62.2291632,
+        25.9448226
+    ],
+    "Valkeal": null,
+    "Jäms": [
+        60.5062032,
+        22.457677
+    ],
+    "Räyskäl": null,
+    "Hyvinkä": null,
+    "kontiolahti": [
+        62.766667,
+        29.85
+    ],
+    "Savonlinn": null,
+    "Immol": null
 }
